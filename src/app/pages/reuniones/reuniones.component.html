@@ -1,0 +1,24 @@
+<div class="row page-titles" >
+        
+        <div class="col-md-5 align-self-center" >
+            <ol class="breadcrumb" style="background-color:  rgb(241, 241, 241);">
+                <li class="breadcrumb-item active">
+                    <a routerLink="/home" >Inicio</a>
+                </li>
+                <li class="breadcrumb-item">Calendario de Reuniones</li>
+                
+            </ol>
+        </div>
+    
+    </div>
+<div class="row">
+            <div class="col-9">
+                <div class="card">
+                    <div class="card-body" style="height: 600px;">
+                        <ng-fullcalendar #ucCalendar [options]="calendarOptions"  (initialized)="loadevents()" (eventClick)="eventClick($event.detail);openLg(editar)" (eventDrop)="updateEvent($event.detail)"
+                        (eventResize)="updateEvent($event.detail)"  (clickButton)="clickButton($event.detail)" [(eventsModel)]="events"></ng-fullcalendar>
+                    </div>
+                </div>
+            </div>
+        </div>
+    

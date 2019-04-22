@@ -1,0 +1,45 @@
+/*Estilos index.html*/
+/*barra de navegacion*/
+body{
+    background-color: rgb(243, 242, 242);
+    height: 100%;
+}
+#barra-navegacion{
+    background-color:#fff !important;  /*color de fondo*/
+}
+#barra-navegacion.scrolled {
+    background-color: rgb(6, 6, 100)!important;
+    transition: background-color 200ms linear;
+  }
+#redes{
+    background-color:rgb(4, 4, 49)!important;  /*color de fondo*/
+}
+.contenedor1{
+    background-color: #fff;
+    height: auto;
+  
+}
+.cabecera-contenedor-3{
+    
+    border-top: 50px solid rgb(228, 196, 15);
+}
+.navbar{
+    background-color: #fff !important;
+}
+.lateral-izq-contenedor-3{
+    
+    border-top: 50px solid rgb(6, 6, 100);
+    
+}
+.contenedor3{
+    
+}
+.cuerpo-contenedor-3{
+    background-color:#fff !important;
+ }
+ .footer{
+    height: 100px;
+    color:#fff;
+    text-align:center;
+     background-color: rgb(243, 242, 242)!important;
+ }

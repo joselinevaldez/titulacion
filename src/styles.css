@@ -1,0 +1,31 @@
+/* You can add global styles to this file, and also import other style files */
+@import url(assets/scss/icons/material-design-iconic-font/css/materialdesignicons.min.css);@import url(assets/scss/icons/material-design-iconic-font/css/materialdesignicons.min.css);
+#caja{
+    margin-top: 4px;
+}
+.opc{
+    margin-left: 2px;
+}
+.img-circle{
+    border-radius: 100%;
+}
+.op{
+    margin-top: 5px;
+}
+.derecha{
+    float: right !important; 
+}
+
+  #flechas{
+      border: 1px solid rgb(191, 203, 207);
+  }
+  .btn-warning{
+
+  }
+  .busqueda{
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 20px;
+   
+    padding: 0 4px 0 4px;
+  }
