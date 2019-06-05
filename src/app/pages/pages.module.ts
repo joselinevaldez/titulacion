@@ -13,7 +13,10 @@ import { TitulacionesComponent } from './titulaciones/titulaciones.component';
 import { RegistroComponent } from './registro/registro.component';
 import { SeguimientoComponent } from './seguimiento/seguimiento.component';
 import {  NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
+import { HttpClientModule} from '@angular/common/http';
+import { FiltroPipe} from '../pipes/filtro.pipe';
+import { FechaPipe} from '../pipes/fecha.pipe';
+import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
 @NgModule({
     declarations: [
         PagesComponent,
@@ -22,7 +25,9 @@ import {  NgbModule } from '@ng-bootstrap/ng-bootstrap';
         ReunionesComponent,
         TitulacionesComponent,
         RegistroComponent,
-        SeguimientoComponent
+        SeguimientoComponent,
+        FiltroPipe,
+        FechaPipe
     ],
     exports: [
         
@@ -30,12 +35,15 @@ import {  NgbModule } from '@ng-bootstrap/ng-bootstrap';
     imports: [
         SharedModule,
         FormsModule,
+       
         ReactiveFormsModule,
         PAGES_ROUTES ,
         FullCalendarModule ,
         NgbModule,
+        NgxPaginationModule,
         CommonModule,
-        RouterModule
+        RouterModule,
+        HttpClientModule
         
     ]
 })
