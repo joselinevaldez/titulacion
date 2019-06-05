@@ -29,3 +29,66 @@
    
     padding: 0 4px 0 4px;
   }
+  #input-busqueda{
+      border: 1px solid lightgray;
+      border-bottom: none;
+      height: 40px;
+     
+    
+  }
+  #select-miembros{
+      margin-top: 5px;
+
+  
+}
+.tag {
+    font-size: 14px;
+    height: 18px;
+   /* padding: .3em .4em .4em;
+    margin: 0 .1em;*/
+    
+    margin-left: 1px;
+   
+
+    background-color: rgb(226, 240, 253);
+  }
+  .dark-modal .modal-content {
+    background-color: #292b2c;
+    color: white;
+  }
+  .dark-modal .close {
+    color: white;
+  }
+  .light-blue-backdrop {
+    background-color: #5cb3fd;
+  }
+  #busqueda{
+      height: 100px;
+      overflow-y: scroll;
+      border: 1px solid lightgray;
+      
+      border-top:none;
+  }
+  #tag-a{
+    margin-top: 20px !important;
+  }
+  .tag a {
+    color: #bbb;
+    cursor: pointer;
+   
+    opacity: 0.6;
+  }
+  .tag a:hover {
+    opacity: 1.0
+  }
+  .tag .remove {
+    vertical-align: bottom;
+    top: 0;
+  }
+  .tag a {
+    margin: 0 0 0 .3em;
+  }
+  .tag a .glyphicon-white {
+    color: #fff;
+    margin-bottom: 2px;
+  }

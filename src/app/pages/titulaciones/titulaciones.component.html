@@ -1,3 +1,30 @@
-<p>
-  titulaciones works!
-</p>
+<div>
+    <ul>
+        <li>
+            nombre
+            <i [class]="getIcon('name')" aria-hidden="true"></i>
+        </li>
+        <li>
+            apellidos
+            <i [class]="getIcon('lastname')" aria-hidden="true"></i>
+        </li>
+        <li>
+            teléfono
+            <i [class]="getIcon('email')" aria-hidden="true"></i>
+        </li>
+		<li>
+            email
+            <i [class]="getIcon('course')" aria-hidden="true"></i>
+        </li>
+    </ul>
+    <ul *ngFor="let student of studentsList">
+        <li>{{student.name}}</li>
+        <li>{{student.lastname}}</li>
+        <li>{{student.email}}</li>
+        <li>{{student.course}}</li>
+	</ul>
+	<div>
+        <ngb-pagination *ngIf="showPagination" [collectionSize]="totalItems" [(page)]="page"
+            (pageChange)="loadPage($event)"></ngb-pagination>
+    </div>
+</div>

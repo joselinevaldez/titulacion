@@ -13,19 +13,18 @@
     </div>
 <div class="row "> 
      
-            <div class="col-lg-10" id="caja">
+            <div class="col-lg-12" id="caja">
                 <div class="card">
                     <div class="card-body">
                            
                       <div class="row col-lg-12">
                             <div class="col-lg-6" style="margin-top: 5px;">
-                            <input type="text" class="form-control input-block busqueda" placeholder="Buscar...">
+                            <input [(ngModel)]="filterText" type="text" class="form-control input-block " placeholder="Buscar...">
                             </div>
                             <div class="col-lg-4" style="margin-top: 5px;">
-                                    <select class="col-lg-5 form-control custom-select">
-                                            <option>Todos</option>
-                                            <option>Activos</option>
-                                            <option>Inactivos</option>
+                                    <select class="col-lg-5 form-control custom-select" (change)="filtrar();" id="filtrado">
+                                            <option value="A">Activos</option>
+                                            <option value="B">Inactivos</option>
                                           </select>
                             </div>
                             <div class="col-lg-2" style="margin-top: 5px; float: right;">
@@ -34,154 +33,70 @@
                                     </button>
                                <!-- -->
                             </div>
-                            <br>
-                            
+                            <br><br><br>
+                            <div class="card col-lg-12">
+                                <div class="card-body">
+                                   <div class="table-responsive col-lg-12">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th hidden="hidden">Id</th>
+                                                <th>Nombre completo</th>
+                                                <th>Puesto</th>
+                                                <th>Carrera</th>
+                                                <th>Correo</th>
+                                                <th>Telefono</th>
+                                                <th>Fecha Registro</th>
+                                                <th>Estatus</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                             
+                                            <tr *ngFor="let m of miembros |  filtro :{ nombre: filterText, estatus: filtro } : true |  paginate: {itemsPerPage:6, currentPage: pageActual} " >
+                                                
+                                              
+                                                <td hidden="hidden">{{m.id}}</td>
+                      
+                                                <td>{{m.nombre}}</td>
+                                                <td>{{m.puesto}}</td>
+                                                <td>{{m.carrera}}</td>
+                                                <td>{{m.correo}}</td>
+                                                <td>{{m.telefono}}</td>
+                                                <td><span class="text-muted"><i class="fa fa-clock-o"></i> 10/02/2019 </span></td>
+                                                <td> 
+                                                <span *ngIf="m.estatus=='A'" class="badge badge-success">Activo</span>
+                                                <span *ngIf="m.estatus=='B'" class="badge badge-danger">Inactivo</span>
+                                                
+                                                </td>
+                                                <td>
+                                                        &nbsp;<button (click)="edit(m,editar);" ngbPopover="Preciona para editar " triggers="mouseenter:mouseleave" popoverTitle="Editar" class="btn btn-info btn-circle"><i class="mdi mdi-account-edit"></i></button>
+                                                        &nbsp;<button  *ngIf="m.estatus=='A'"  ngbPopover="Preciona para desactivar " triggers="mouseenter:mouseleave" popoverTitle="Desactivar" class="btn btn-danger btn-circle"><i class="mdi mdi-account-off"></i></button>
+                                                        &nbsp;<button *ngIf="m.estatus=='B'" ngbPopover="Preciona para reactivar" triggers="mouseenter:mouseleave" popoverTitle="Reactivar" class="btn btn-success btn-circle"><i class="mdi mdi-account-check"></i></button>
+                                                     
+                                                       
+                                                            
+                                                              
+    
+                                                </td>
+                                                
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="col-lg-12" style="text-align: center;">
+                                    <pagination-controls (pageChange)="pageActual = $event"></pagination-controls>
+                                    </div>
+                                </div>
+                                <br>
+                                                      
+                                </div>
+                            </div>
                       </div>
-                      <br>
-                      <div class="col-lg-3">
-                            <label>Página 1 de 20 </label><br>
-                            </div>
-                      <div class="row col-lg-12">
-                     
-                        <div class="col-lg-6" id="caja">
-                            <div class="card card-body">
-                                <div class="row">
-                                    <div class="col-md-4 col-lg-3 text-center">
-                                        <img class="img-circle img-responsive" style="width: 100%; height: 100%;" alt="user" src="../../../assets/img/1.jpg">
-                                    </div>
-                                    <div class="col-md-8 col-lg-9">
-                                        <h5 class="box-title m-b-0">Raul Antonio Martinez Valenzuela <i class="mdi mdi-account-check text-success"></i></h5> 
-                                        <h6>Secretario</h6>
-                                        <h6>Gibran@uas.com.mx</h6>
-                                        <h6>6682414321</h6>
-                                        <div class="row col-lg-12">
-                                            <button class="btn btn-primary btn-circle btn-sm ">
-                                                <i class="mdi mdi-account-edit"></i>
-                                            </button>
-                                            <button class="btn btn-danger btn-circle btn-sm opc ">
-                                                <i class="mdi mdi-account-remove"></i>
-                                            </button>
-                                            <button class="btn btn-info btn-circle btn-sm opc ">
-                                                 <i class="mdi mdi-eye"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6" id="caja">
-                                <div class="card card-body">
-                                    <div class="row">
-                                        <div class="col-md-4 col-lg-3 text-center">
-                                            <img class="img-circle img-responsive" style="width: 100%; height: 100%;" alt="user" src="../../../assets/img/1.jpg">
-                                        </div>
-                                        <div class="col-md-8 col-lg-9">
-                                            <h5 class="box-title m-b-0">Raul Antonio Martinez Valenzuela <i class="mdi mdi-account-check text-success"></i></h5> 
-                                            <h6>Secretario</h6>
-                                            <h6>Gibran@uas.com.mx</h6>
-                                            <h6>6682414321</h6>
-                                            <div class="row col-lg-12">
-                                                <button class="btn btn-primary btn-circle btn-sm ">
-                                                    <i class="mdi mdi-account-edit"></i>
-                                                </button>
-                                                <button class="btn btn-danger btn-circle btn-sm opc ">
-                                                    <i class="mdi mdi-account-remove"></i>
-                                                </button>
-                                                <button class="btn btn-info btn-circle btn-sm opc ">
-                                                     <i class="mdi mdi-eye"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6" id="caja">
-                                    <div class="card card-body">
-                                        <div class="row">
-                                            <div class="col-md-4 col-lg-3 text-center">
-                                                <img class="img-circle img-responsive" style="width: 100%; height: 100%;" alt="user" src="../../../assets/img/1.jpg">
-                                            </div>
-                                            <div class="col-md-8 col-lg-9">
-                                                <h5 class="box-title m-b-0">Raul Antonio Martinez Valenzuela <i class="mdi mdi-account-check text-success"></i></h5> 
-                                                <h6>Secretario</h6>
-                                                <h6>Gibran@uas.com.mx</h6>
-                                                <h6>6682414321</h6>
-                                                <div class="row col-lg-12">
-                                                    <button class="btn btn-primary btn-circle btn-sm ">
-                                                        <i class="mdi mdi-account-edit"></i>
-                                                    </button>
-                                                    <button class="btn btn-danger btn-circle btn-sm opc ">
-                                                        <i class="mdi mdi-account-remove"></i>
-                                                    </button>
-                                                    <button class="btn btn-info btn-circle btn-sm opc ">
-                                                         <i class="mdi mdi-eye"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6" id="caja">
-                                        <div class="card card-body">
-                                            <div class="row">
-                                                <div class="col-md-4 col-lg-3 text-center">
-                                                    <img class="img-circle img-responsive" style="width: 100%; height: 100%;" alt="user" src="../../../assets/img/1.jpg">
-                                                </div>
-                                                <div class="col-md-8 col-lg-9">
-                                                    <h5 class="box-title m-b-0">Raul Antonio Martinez Valenzuela <i class="mdi mdi-account-check text-success"></i></h5> 
-                                                    <h6>Secretario</h6>
-                                                    <h6>Gibran@uas.com.mx</h6>
-                                                    <h6>6682414321</h6>
-                                                    <div class="row col-lg-12">
-                                                        <button class="btn btn-primary btn-circle btn-sm ">
-                                                            <i class="mdi mdi-account-edit"></i>
-                                                        </button>
-                                                        <button class="btn btn-danger btn-circle btn-sm opc ">
-                                                            <i class="mdi mdi-account-remove"></i>
-                                                        </button>
-                                                        <button class="btn btn-info btn-circle btn-sm opc ">
-                                                             <i class="mdi mdi-eye"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                       
-                       
-                       
-                    </div><hr>
-                    <div class="row col-lg-2 derecha">
-                 
-                      <button class="btn btn-light opc" id="flechas"><i class="fa fa-angle-left"></i> Ant</button>
-                      <button class="btn btn-light  opc" id="flechas"> Sig <i class="fa fa-angle-right"></i></button>
-                    </div> 
+                    
                     </div>
                 </div>
             </div>
-            <div class="col-lg-2"id="caja">
-                <div class="card">
-                    <div class="card-body">
-                            <div class="card  border-left-primary op">
-                                    <div class="card-body">
-                                      Total: <strong><label> 5</label></strong>
-                                    </div>
-                            </div>
-                            <div class="card border-left-success op">
-                                    <div class="card-body">
-                                      Activos: <strong><label> 4</label></strong>
-                                    </div>
-                            </div>
-                            <div class="card border-left-danger op">
-                                    <div class="card-body">
-                                      Inactivos:  <strong><label> 1</label></strong>
-                                    </div>
-                            </div>
-                     
-                    </div>
-                    </div>
-              
-            </div>
+          
         </div>
           
        
@@ -197,33 +112,33 @@
                         <div class="vtabs customvtab">
                                 <ul class="nav nav-tabs tabs-vertical" role="tablist">
                                     
-                                    <li class="nav-item"> <a  [ngClass]="{active: miembrosForm.invalid }"class="nav-link " data-toggle="tab" href="#info" role="tab" aria-expanded="true"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><i class="mdi  mdi-account-card-details"></i> Datos personales <i *ngIf="miembrosForm.valid" class="mdi mdi-check-circle-outline text-success"></i></font></font></a> </li>
-                                    <li class="nav-item"> <a [ngClass]="{active: miembrosForm.valid ,disabled: miembrosForm.invalid }" class="nav-link " data-toggle="tab" href="#cuenta" role="tab" aria-expanded="false"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><i class="mdi mdi-account-circle"></i> Cuenta de usuario <i *ngIf="miembrosForm.valid && usuarioForm.valid" class="mdi mdi-check-circle-outline text-success"></i></font></font> </a> </li>
+                                    <li class="nav-item"> <a  class="nav-link active " data-toggle="tab" href="#info" role="tab" aria-expanded="true"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><i class="mdi  mdi-account-card-details"></i> Datos personales <i *ngIf="miembrosForm.valid" class="mdi mdi-check-circle-outline text-success"></i></font></font></a> </li>
+                                    <li class="nav-item"> <a [ngClass]="{disabled: miembrosForm.invalid }" class="nav-link " data-toggle="tab" href="#cuenta" role="tab" aria-expanded="false"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><i class="mdi mdi-account-circle"></i> Cuenta de usuario <i *ngIf="miembrosForm.valid && usuarioForm.valid" class="mdi mdi-check-circle-outline text-success"></i></font></font> </a> </li>
                                 </ul>
                                 <!-- TABS -->
                                 <div class="tab-content">
                                     <!-- INICIA TAB PREGUNTAS PERSONALES -->
                                     <br>
-                                    <div [ngClass]="{ active: miembrosForm.invalid }" class="tab-pane p-20 " id="info" role="tabpanel" aria-expanded="false"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"></font></font>
+                                    <div  class="tab-pane p-20  active" id="info" role="tabpanel" aria-expanded="false"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"></font></font>
                                       <form ngNativeValidate [formGroup]="miembrosForm">
                                           
                                         <strong><label>Llena los campos requeridos</label></strong>
                                         <div class="form-group">
                                                 <label ><span class="text-info">* </span>Nombre completo</label>
-                                                <input formControlName="nombre" name="nombre" class="form-control"  type="text" > 
+                                                <input  formControlName="nombre" name="nombre" class="form-control"  type="text" > 
                                                 <p *ngIf="miembrosForm.controls.nombre.invalid && !miembrosForm.controls.nombre.pristine || miembrosForm.controls.nombre.invalid && press==true" class="text text-danger">El nombre es requerido <i class="fa fa-exclamation-circle uncheck"></i></p>
                                             </div>
                                             <div class="row ">
                                                 <div class="col-lg-6 form-group">
                                                         <label for="exampleInputuname"><span class="text-info">* </span>Puesto</label>
-                                                        <select formControlName="puesto" name="puesto" class="form-control custom-select" >
+                                                        <select  formControlName="puesto" name="puesto" class="form-control custom-select" >
                                                             <option *ngFor="let p of puestos" value="{{p}}">{{p}}</option>
                                                         </select> 
                                                         <p *ngIf="miembrosForm.controls.puesto.invalid && !miembrosForm.controls.puesto.pristine || miembrosForm.controls.puesto.invalid && press==true" class="text text-danger">El puesto es requerido <i class="fa fa-exclamation-circle uncheck"></i></p>
                                                 </div>
                                                 <div class="col-lg-6 form-group">
                                                         <label for="exampleInputuname"><span class="text-info">* </span>Carrera</label>
-                                                        <select formControlName="carrera" name="carrera" class="form-control custom-select" >
+                                                        <select  formControlName="carrera" name="carrera" class="form-control custom-select" >
                                                             <option *ngFor="let c of carreras" value="{{c}}">{{c}}</option>
                                                         </select> 
                                                         <p *ngIf="miembrosForm.controls.carrera.invalid && !miembrosForm.controls.carrera.pristine || miembrosForm.controls.carrera.invalid && press==true" class="text text-danger">La carrera es requerida <i class="fa fa-exclamation-circle uncheck"></i></p>
@@ -231,13 +146,13 @@
                                             </div>
                                             <div class="form-group">
                                                     <label for="exampleInputuname"><span class="text-info">* </span>Correo</label>
-                                                    <input formControlName="correo" name="correo" class="form-control"  type="email" > 
+                                                    <input  formControlName="correo" name="correo" class="form-control"  type="email" > 
                                                     <p *ngIf="miembrosForm.controls.correo.invalid && !miembrosForm.controls.correo.pristine || miembrosForm.controls.correo.invalid && press==true" class="text text-danger">Ingresa un correo valido <i class="fa fa-exclamation-circle uncheck"></i></p>
                                                 </div>
                                             
                                             <div class="form-group">
                                                     <label for="exampleInputuname"><span class="text-info">* </span>Telefono</label>
-                                                    <input formControlName="telefono" name="telefono" class="form-control"  type="number" > 
+                                                    <input  formControlName="telefono" name="telefono" class="form-control"  type="text" > 
                                                     <p *ngIf="miembrosForm.controls.telefono.invalid && !miembrosForm.controls.telefono.pristine || miembrosForm.controls.telefono.invalid && press==true" class="text text-danger">El telefono debe contener 10 numeros <i class="fa fa-exclamation-circle uncheck"></i></p>
                                             </div>  
                                             
@@ -245,7 +160,7 @@
                                     </div>
                                      <!-- TERMINA TAB PREGUNTAS PERSONALES -->
                                      <!--INCIA TAB ANTECEDENTES PATOLOGICOS-->
-                                    <div  [ngClass]="{active: miembrosForm.valid }" class="tab-pane" id="cuenta" role="tabpanel" aria-expanded="false">
+                                    <div   class="tab-pane" id="cuenta" role="tabpanel" aria-expanded="false">
                                             <form ngNativeValidate [formGroup]="usuarioForm">
                                           
                                                     <strong><label>Llena los campos requeridos</label></strong>
@@ -275,9 +190,12 @@
                                                                 <p *ngIf="usuarioForm.errors?.sonIguales && !usuarioForm.pristine" class="form-control-feedback text-danger"> Las contraseñas no coinciden. </p>
                                                             </div>
                                                         </div>
-                                                        <div *ngIf="guardado==true" class="alert alert-success">
+                                                        <div *ngIf="guardado=='si'" class="alert alert-success">
                                                             <p>Miembro registrado con exito!</p>
                                                         </div>
+                                                        <div *ngIf="guardado=='no'" class="alert alert-danger">
+                                                                <p>El correo o usuario ya se encuentran registrados </p>
+                                                            </div>
                                                         <div style="float:right;">
                                                             <button [ngClass]="{ disabled: usuarioForm.invalid }" (click)="guardar();" class="btn btn-success"> Guardar</button>
                                                         </div>
@@ -298,4 +216,67 @@
                                   
                         </div>
               
-              </ng-template>  
+        </ng-template>  
+        <ng-template #editar let-modal>
+            <div class="modal-header">
+              <h4 class="modal-title">Editar miembro</h4>
+              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            
+            <div class="modal-body">
+                <form ngNativeValidate [formGroup]="miembrosForm">
+                        
+                    <span style="float: right;" *ngIf="miembroeditar.estatus=='1'" class="badge badge-success">Miembro Activo <i class="mdi mdi-account-check"></i></span>
+                    <span style="float: right;" *ngIf="miembroeditar.estatus=='0'" class="badge badge-danger">Miembro Inactivo <i class="mdi mdi-account-off"></i></span>
+                    
+                    
+                      <div class="form-group">
+                              <label ><span class="text-info">* </span>Nombre completo</label>
+                              <input [(ngModel)]="miembroeditar.nombre" formControlName="nombre" name="nombre" class="form-control"  type="text" > 
+                              <p *ngIf="miembrosForm.controls.nombre.invalid && !miembrosForm.controls.nombre.pristine || miembrosForm.controls.nombre.invalid && press==true" class="text text-danger">El nombre es requerido <i class="fa fa-exclamation-circle uncheck"></i></p>
+                          </div>
+                          <div class="row ">
+                              <div class="col-lg-6 form-group">
+                                      <label for="exampleInputuname"><span class="text-info">* </span>Puesto</label>
+                                      <select [(ngModel)]="miembroeditar.puesto" formControlName="puesto" name="puesto" class="form-control custom-select" >
+                                          <option *ngFor="let p of puestos" value="{{p}}">{{p}}</option>
+                                      </select> 
+                                      <p *ngIf="miembrosForm.controls.puesto.invalid && !miembrosForm.controls.puesto.pristine || miembrosForm.controls.puesto.invalid && press==true" class="text text-danger">El puesto es requerido <i class="fa fa-exclamation-circle uncheck"></i></p>
+                              </div>
+                              <div class="col-lg-6 form-group">
+                                      <label for="exampleInputuname"><span class="text-info">* </span>Carrera</label>
+                                      <select [(ngModel)]="miembroeditar.carrera" formControlName="carrera" name="carrera" class="form-control custom-select" >
+                                          <option *ngFor="let c of carreras" value="{{c}}">{{c}}</option>
+                                      </select> 
+                                      <p *ngIf="miembrosForm.controls.carrera.invalid && !miembrosForm.controls.carrera.pristine || miembrosForm.controls.carrera.invalid && press==true" class="text text-danger">La carrera es requerida <i class="fa fa-exclamation-circle uncheck"></i></p>
+                              </div>
+                          </div>
+                          <div class="form-group">
+                                  <label for="exampleInputuname"><span class="text-info">* </span>Correo</label>
+                                  <input [(ngModel)]="miembroeditar.correo" formControlName="correo" name="correo" class="form-control"  type="email" > 
+                                  <p *ngIf="miembrosForm.controls.correo.invalid && !miembrosForm.controls.correo.pristine || miembrosForm.controls.correo.invalid && press==true" class="text text-danger">Ingresa un correo valido <i class="fa fa-exclamation-circle uncheck"></i></p>
+                              </div>
+                          
+                          <div class="form-group">
+                                  <label for="exampleInputuname"><span class="text-info">* </span>Telefono</label>
+                                  <input [(ngModel)]="miembroeditar.telefono" formControlName="telefono" name="telefono" class="form-control"  type="number" > 
+                                  <p *ngIf="miembrosForm.controls.telefono.invalid && !miembrosForm.controls.telefono.pristine || miembrosForm.controls.telefono.invalid && press==true" class="text text-danger">El telefono debe contener 10 numeros <i class="fa fa-exclamation-circle uncheck"></i></p>
+                          </div>  
+                          
+                      </form>   
+                      <div *ngIf="editado==true" class="alert alert-success">
+                        <p>Cambios realizados con exito!</p>
+                    </div>
+                    <div style="float:right;">
+                        <button [ngClass]="{ disabled: miembrosForm.invalid }" (click)="guardarCambios();" class="btn btn-success"> Guardar</button>
+                    </div>
+                        
+                              
+            </div>
+            <div class="modal-footer">
+                              
+                    </div>
+          
+        </ng-template>  

@@ -12,13 +12,282 @@
     
     </div>
 <div class="row">
-            <div class="col-9">
+            <div class="col-12">
                 <div class="card">
-                    <div class="card-body" style="height: 600px;">
-                        <ng-fullcalendar #ucCalendar [options]="calendarOptions"  (initialized)="loadevents()" (eventClick)="eventClick($event.detail);openLg(editar)" (eventDrop)="updateEvent($event.detail)"
-                        (eventResize)="updateEvent($event.detail)"  (clickButton)="clickButton($event.detail)" [(eventsModel)]="events"></ng-fullcalendar>
+                    <div class="card-body" >
+                        <div class="row col-lg-12">
+                            <div class="col-lg-10">
+                             <button *ngIf="op=='calendar'" (click)="cambiar('lista');" style="float: left; " class="btn btn-info  ">Mostrar Lista &nbsp;<i class="fa  fa-list-alt"></i></button>
+                             <button *ngIf="op=='lista'" (click)="cambiar('calendar');"style="float: left; " class="btn btn-info  ">Mostrar Calendario &nbsp;<i class="mdi mdi-calendar-text"></i></button>
+                        
+                            </div>
+                            
+                            <div class="col-lg-2">
+                                <button (click)="dia(1,nuevo);" style="float: right; " class="btn btn-light btn-circle "><i class="mdi mdi-calendar-plus"></i></button>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="col-lg-12" *ngIf="op=='calendar'" >
+                        <ng-fullcalendar #ucCalendar [options]="calendarOptions" (initialized)="loadevents()"  (eventClick)="eventClick($event.detail,editar);" (eventDrop)="updateEvent($event.detail)"
+                        (eventResize)="updateEvent($event.detail)" (dayClick)="dia($event.detail,nuevo)"  (clickButton)="clickButton($event.detail)" [(eventsModel)]="events"></ng-fullcalendar>
+                        </div>
+                        <div class="col-lg-12" *ngIf="op=='lista'">
+                            <div class="row col-lg-12">
+                                    <div class="col-lg-5" style="margin-top: 5px;">
+                                        <label>Busqueda</label>
+                                            <input type="text" [(ngModel)]="filterText" class="form-control input-block " placeholder="">
+                                            </div>
+                                            <div class="col-lg-2" style="margin-top: 5px;">
+                                                <label>Filtrar</label>
+                                                    <select class=" form-control custom-select" (change)="filtrar();" id="filtrado">
+                                                            <option value="P">Pendientes</option>
+                                                            <option value="R">Realizadas</option>
+                                                            <option value="C">Canceladas</option>
+                                                          </select>
+                                            </div>
+                                            <div class="col-lg-2" style="margin-top: 5px; ">
+                                                 <label>Mes:</label> <input type="month" id="mes" (change)="mes();" value="{{mesfiltro}}" class="form-control">
+                                                
+                                                 <!-- -->
+                                            </div>
+                                            
+                            </div>
+                                <div class="card-body">
+                                        <div class="table-responsive">
+                                         <table class="table table-hover">
+                                             <thead>
+                                                 <tr>
+                                                     <th hidden="hidden">Id</th>
+                                                     <th>Titulo</th>
+                                                     <th>comentarios</th>
+                                                     <th>fecha</th>
+                                                     <th>hora</th>
+                                                     <th>estatus</th>
+                                                     <th></th>
+                                                 </tr>
+                                             </thead>
+                                             <tbody>
+                                                 <tr *ngFor="let r of reuniones |  filtro :{ title: filterText, start: mesfiltro,estatus: filtro } : true | paginate: {itemsPerPage:2, currentPage: pageActual}">
+                                                     <td hidden="hidden">{{r.id}}</td>
+                           
+                                                     <td>{{r.title}}</td>
+                                                     <td>{{r.comentario}}</td>
+                                                     <td>{{r.start | fecha:10}}</td>
+                                                     
+                                                     <td><span class="text-muted"><i class="mdi mdi-clock"></i> {{r.time}} </span></td>
+                                                     <td> 
+                                                     <span *ngIf="r.estatus=='P'" class="badge badge-info">Pendiente</span>
+                                                     <span *ngIf="r.estatus=='R'" class="badge badge-success">Realizada</span>
+                                                     <span *ngIf="r.estatus=='C'" class="badge badge-danger">Cancelada</span>
+                                                     
+                                                     </td>
+                                                     <td>
+                                                            &nbsp; <button  ngbPopover="Preciona para editar " triggers="mouseenter:mouseleave" popoverTitle="Editar" class="btn btn-info btn-circle"><i class="mdi mdi-pencil-box-outline"></i></button>
+                                                            &nbsp;<button  *ngIf="r.estatus=='P'"  ngbPopover="Preciona para cancelar " triggers="mouseenter:mouseleave" popoverTitle="Cancelar" class="btn btn-danger btn-circle"><i class="mdi mdi-calendar-remove"></i></button>
+                                                            &nbsp;<button *ngIf="r.estatus=='C'" ngbPopover="Preciona para reactivar" triggers="mouseenter:mouseleave" popoverTitle="Reactivar" class="btn btn-success btn-circle"><i class="mdi mdi-calendar-check"></i></button>
+                                                          
+                                                            
+                                                                 
+                                                                   
+         
+                                                     </td>
+                                                 </tr>
+                                             </tbody>
+                                         </table>
+                                         <div class="col-lg-12" style="text-align: center;">
+                                                <pagination-controls (pageChange)="pageActual = $event"></pagination-controls>
+                                                </div>
+                                     </div>
+                                     <br>
+                                                                       
+                                     </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+</div>
+
+<ng-template #nuevo let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Nueva reunion</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
     
+    <div class="modal-body">
+            <div class="vtabs customvtab">
+                    <ul class="nav nav-tabs tabs-vertical" role="tablist">
+                        
+                        <li class="nav-item"> <a class="nav-link  active" data-toggle="tab" href="#info" role="tab" aria-expanded="true"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><i class="mdi  mdi-calendar-text"></i> Detalles de la reunion <i *ngIf="reunionesForm.valid" class="mdi mdi-check-circle-outline text-success"></i></font></font></a> </li>
+                        <li class="nav-item"> <a [ngClass]="{disabled: reunionesForm.invalid }"  class="nav-link " data-toggle="tab" href="#cuenta" role="tab" aria-expanded="false"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><i class="mdi mdi-account-multiple"></i> Participantes</font></font> </a> </li>
+                    </ul>
+                    <!-- TABS -->
+                    <div class="tab-content">
+                        <!-- INICIA TAB PREGUNTAS PERSONALES -->
+                        <br>
+                        <div  class="tab-pane p-20 active" id="info" role="tabpanel" aria-expanded="false"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"></font></font>
+                            <form ngNativeValidate [formGroup]="reunionesForm">
+                
+                                    
+                                    <div class="form-group col-lg-12">
+                                            <strong><label>Llena los campos requeridos</label></strong><br>
+                                            <label ><span class="text-info">* </span>Titulo</label>
+                                            <input  formControlName="titulo" name="titulo" class="form-control col-lg-12"  type="text" > 
+                                        
+                                        </div>
+                                     <div class="row col-lg-12">
+                                         <div class="form-group col-lg-6">
+                                             <label ><span class="text-info">* </span>Dia de reunion</label>
+                                             <input [ngModel]="fecha" formControlName="fecha" name="fecha" class="form-control col-lg-12"  type="date" > 
+                                             
+                                         </div>
+                                         <div class="form-group col-lg-6">
+                                             <label ><span class="text-info">* </span>Hora</label>
+                                             <input  formControlName="hora" name="hora" class="form-control col-lg-12"  type="time" value="07:00" min="07:00" max="19:00" > 
+                                         
+                                         </div>
+                                     </div>
+                                    
+                                     <div class="col-lg-12 form-group">
+                                         <label for="exampleInputuname">Comentarios (opcional)</label>
+                                         <textarea  formControlName="comentarios" name="comentarios" class="form-control " rows="5" >
+                                             </textarea>
+                                     </div>   
+                                       </form>    
+                        </div>
+                         <!-- TERMINA TAB PREGUNTAS PERSONALES -->
+                         <!--INCIA TAB ANTECEDENTES PATOLOGICOS-->
+                        <div class="tab-pane" id="cuenta" role="tabpanel" aria-expanded="false">
+                        <form ngNativeValidate [formGroup]="participantesForm">    
+                            <div class="col-lg-12 form-group">
+                                        <label for="exampleInputuname"><span class="text-info">* </span>Participantes</label>
+                                        <select  formControlName="participantes" name="participantes" id="participantes" class="form-control custom-select" (change)="selecP();" >
+                                            <option value="1" >Todos los miembros activos</option>
+                                            <option value="2">Personalizado</option>
+                                        </select> 
+                                    </div>   
+                                    <div *ngIf="seleccion==2 || seleccion==1" class="col-lg-12">
+                                            <span id="tag-a" *ngFor="let p of participantes; let indice=index" class="tag label label-info">
+                                                    
+                                                <span>{{p.nombre}}</span>
+                                                    <a><i (click)="remover(p);" class="remove mdi mdi-close"></i></a> 
+                                            </span>
+                                    </div>
+                                    <div *ngIf="seleccion==2 "class="col-lg-8 form-group">
+                                        <input class="col-lg-12" id="input-busqueda" type="text" placeholder="buscar..">
+                                        
+                                        <div class="table-responsive" id="busqueda">
+                                            <table class="table table-hover" id="select-miembros">
+                                                
+                                                <tbody>
+                                                    <tr *ngFor="let m of miembros">
+                                                        <td hidden="hidden">{{m.id}}</td>
+                              
+                                                        <td>{{m.nombre}}</td>
+                                                                                      
+                                                        <td>
+                                                                <button (click)="addparticipantes(m)" title="Agregar participante" class="btn btn-success btn-sm btn-circle"><i class="mdi mdi-plus"></i></button>
+                                                               
+                                                               
+                                                                    
+                                                                      
+                        
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div> 
+                                   
+                                    <div style="float:right;">
+                                            <button  (click)="guardar();" class="btn btn-success"> Guardar</button>
+                                    </div>
+                        </form>
+                        
+                        </div>
+                        
+                
+                    </div>
+                </div> <!---->
+                    
+    
+              
+                
+                      
+    </div>
+    <div class="modal-footer">
+                      
+            </div>
+  
+</ng-template>  
+<ng-template #editar let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title">Editar reunion</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        
+        <div class="modal-body">
+                <div class="vtabs customvtab">
+                        <ul class="nav nav-tabs tabs-vertical" role="tablist">
+                            
+                            <li class="nav-item"> <a class="nav-link  active" data-toggle="tab" href="#info" role="tab" aria-expanded="true"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><i class="mdi  mdi-calendar-text"></i> Detalles de la reunion </font></font></a> </li>
+                            <li class="nav-item"> <a class="nav-link " data-toggle="tab" href="#cuenta" role="tab" aria-expanded="false"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><i class="mdi mdi-account-multiple"></i> Participantes</font></font> </a> </li>
+                        </ul>
+                        <!-- TABS -->
+                        <div class="tab-content">
+                            <!-- INICIA TAB PREGUNTAS PERSONALES -->
+                            <br>
+                            <div  class="tab-pane p-20 active" id="info" role="tabpanel" aria-expanded="false"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"></font></font>
+                                <form ngNativeValidate [formGroup]="reunionesForm">
+                    
+                                        
+                                        <div class="form-group col-lg-12">
+                                                <strong><label>Llena los campos requeridos</label></strong><br>
+                                                <label ><span class="text-info">* </span>Titulo</label>
+                                                <input  formControlName="titulo" [(ngModel)]="evento.title" name="titulo" class="form-control col-lg-12"  type="text" > 
+                                            
+                                            </div>
+                                         <div class="row col-lg-12">
+                                             <div class="form-group col-lg-6">
+                                                 <label ><span class="text-info">* </span>Dia de reunion</label>
+                                                 <input  formControlName="fecha" value="{{evento.start._i | fecha:10}}" name="fecha" class="form-control col-lg-12"  type="date" > 
+                                                 
+                                             </div>
+                                             <div class="form-group col-lg-6">
+                                                 <label ><span class="text-info">* </span>Hora</label>
+                                                 <input  formControlName="hora" name="hora" [(ngModel)]="evento.time" class="form-control col-lg-12"  type="time" value="07:00" min="07:00" max="19:00" > 
+                                             
+                                             </div>
+                                         </div>
+                                        
+                                         <div class="col-lg-12 form-group">
+                                             <label for="exampleInputuname">Comentarios (opcional)</label>
+                                             <textarea  formControlName="comentarios" name="comentarios" [(ngModel)]="evento.comentario" class="form-control " rows="5" >
+                                                 </textarea>
+                                         </div>   
+                                           </form>    
+                            </div>
+                             <!-- TERMINA TAB PREGUNTAS PERSONALES -->
+                             <!--INCIA TAB ANTECEDENTES PATOLOGICOS-->
+                            <div class="tab-pane" id="cuenta" role="tabpanel" aria-expanded="false">
+                           hola
+                            
+                            </div>
+                            
+                    
+                        </div>
+                    </div> <!---->
+                        
+        
+                  
+                    
+                          
+        </div>
+        <div class="modal-footer">
+                          
+                </div>
+      
+    </ng-template>  
